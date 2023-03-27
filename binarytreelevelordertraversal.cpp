@@ -22,31 +22,18 @@ public:
     queue<TreeNode*> q;
     TreeNode* current;
     q.push(root);
-    int currentLevel = 0;
-    int nodesLeftOnCurrentLevel = 0;
-    int nodesOnNextLevel = 0;
     while(!q.empty()) {
-      current = q.front();
-      q.pop();
-      // take the current node, add to list
-      if(nodesLeftOnCurrentLevel == 0) {
-          currentLevel++;
-          nodesLeftOnCurrentLevel = nodesOnNextLevel;
-      }
-      else nodesLeftOnCurrentLevel--;
+        int levelSize = q.size();
+        vector<int> currentLevel;
 
-      if(currentLevel > result.size()-1) result.push_back(vector<int>{});
-      else result[currentLevel].push_back(current->val);
-      // add the left node to the queue
-      if(current->left != nullptr) {
-        q.push(current->left);
-        nodesOnNextLevel++;
-      }
-      // add the right node to the queue
-      if(current->right !=nullptr) {
-        q.push(current->right);
-        nodesOnNextLevel++;
-      }
+        for(int i = 0; i < levelSize; i++) {
+            current = q.front();
+            q.pop();
+            if(current->left != nullptr) q.push(current->left);
+            if(current->right != nullptr) q.push(current->right);
+            currentLevel.push_back(current->val);
+        }
+        result.push_back(currentLevel);
     }
     // TODO: Write your code here
     return result;
